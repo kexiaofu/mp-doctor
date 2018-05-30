@@ -4,7 +4,7 @@
     <div class="userinfo" @click="bindViewTap">
       <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
       <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
+        <p>{{userInfo.nickName}}</p>
       </div>
     </div>
 
@@ -14,9 +14,7 @@
 </template>
 
 <script>
-import card from '@/components/card'
 import { apiUrl } from '@/utils/index'
-
 
 export default {
   data () {
@@ -27,9 +25,7 @@ export default {
     }
   },
 
-  components: {
-    card
-  },
+  components: {},
 
   mounted() {
     console.log(apiUrl)
@@ -83,7 +79,7 @@ export default {
             let data = res.data.data;
             if(data.hadRecord) {
               console.log('老用户');
-              this.userInfo = data.record;
+              this.userInfo = data.record[0];
               wx.setStorageSync('oid',data.clientId);
             } else {
               this.noAuthority = true;
@@ -117,7 +113,7 @@ export default {
           if(res.data.code === 2000) {
             this.userInfo = res.data.data[0];
           } else if(res.data.code === 4004) {
-             //this.wxLogin();
+             this.wxLogin();
           }
         },
       })
